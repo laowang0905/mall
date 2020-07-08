@@ -31,6 +31,7 @@ export default {
   display: flex;
   height: 44px;
   color: #fff;
+  z-index: 999;
   // background-color: #bfa;
   .left,
   .right {

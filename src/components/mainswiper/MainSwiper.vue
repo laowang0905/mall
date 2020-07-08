@@ -29,7 +29,4 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-.swiper-container {
-  margin-top: 44px;
-}
 </style>
