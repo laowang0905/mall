@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item">
     <a>
-      <img :src="item.show.img" />
+      <img :src="item.show.img" @load="imgLoad"/>
     </a>
     <a class="goods-introduce">
       <div class="goods-title">
@@ -24,7 +24,12 @@ export default {
         return {}
       }
     }
-  }
+  },
+  methods: {
+    imgLoad() {
+      this.$bus.$emit('imgLoaded')
+    }
+  },
 }
 </script>
 <style lang='less' scoped>

@@ -1,11 +1,7 @@
 <template>
   <div class="tabcontrol-container">
     <ul>
-      <li
-        v-for="(item, index) in titles"
-        :key="index"
-        @click="itemClick(index, item)"
-      >
+      <li v-for="(item, index) in titles" :key="index" @click="itemClick(index, item)">
         <span :class="{active: currentIndex==index}">{{item[Object.keys(item)[0]]}}</span>
       </li>
     </ul>
@@ -15,8 +11,7 @@
 export default {
   data () {
     return {
-      currentIndex: 0,
-      currentTitle: Object.keys(this.titles[0])[0]
+      currentIndex: 0
     }
   },
   props: {
@@ -25,21 +20,26 @@ export default {
       default () {
         return []
       }
-    }
+    },
+    tabControlSync: Number
   },
   methods: {
     itemClick (index, item) {
+      console.log('aaa');
+      
       this.currentIndex = index
-      this.currentTitle = Object.keys(item)[0]
-      this.$emit('changeTitle', this.currentTitle)
+      this.$emit('changeTitle', [Object.keys(item)[0], index])
     }
-  }
+  },
+  watch: {
+    tabControlSync(val, oldVal) {
+      this.currentIndex = val
+    }
+  },
 }
 </script>
 <style lang='less' scoped>
 .tabcontrol-container {
-  position: sticky;
-  top: 44px;
   ul {
     display: flex;
     background-color: #fff;

@@ -1,6 +1,6 @@
 <template>
   <div class="goods-container">
-    <GoodsItem v-for="item in goodsList" :key="item.acm" :item="item"></GoodsItem>
+    <GoodsItem v-for="item in goodsList" :key="item.show.img+Math.random()" :item="item"></GoodsItem>
   </div>
 </template>
 <script>
@@ -9,7 +9,7 @@ export default {
   props: {
     goodsList: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     }
