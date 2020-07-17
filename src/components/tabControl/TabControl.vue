@@ -40,6 +40,7 @@ export default {
 </script>
 <style lang='less' scoped>
 .tabcontrol-container {
+  font-size: 14px;
   ul {
     display: flex;
     background-color: #fff;

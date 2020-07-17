@@ -10,8 +10,8 @@
   </div>
 </template>
 <script>
-import Swiper from 'components/mainswiper/swiper/Swiper'
-import SwiperItem from 'components/mainswiper/swiperitem/SwiperItem'
+import Swiper from 'components/swiper/swiper/Swiper'
+import SwiperItem from 'components/swiper/swiperitem/SwiperItem'
 
 export default {
   data () {

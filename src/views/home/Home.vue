@@ -35,7 +35,7 @@
 </template>
 <script>
 import NavBar from 'components/navbar/NavBar'
-import MainSwiper from 'components/mainswiper/MainSwiper'
+import MainSwiper from 'components/swiper/MainSwiper'
 import Recommend from 'components/recommend/Recommend'
 import Feature from 'components/feature/Feature'
 import TabControl from 'components/tabControl/TabControl'
@@ -44,6 +44,7 @@ import Scroll from 'components/scroll/Scroll'
 import BackTop from 'components/backTop/BackTop'
 
 import { multidataApi, reqGoodsList } from 'network/homeApi.js'
+import { debounce } from 'common/utils'
 
 export default {
   data () {
@@ -60,7 +61,9 @@ export default {
       isShow: false,
       tabControlTop: 0,
       isFixed: false,
-      tabControlSync: 0
+      tabControlSync: 0,
+      leavePos: 0,
+      refresh: null
     }
   },
   methods: {
@@ -79,8 +82,11 @@ export default {
     },
     // 改变type
     changeTitle (arr) {
+      // this.$refs.tab
       this.type = arr[0]
       this.tabControlSync = arr[1]
+      this.$refs.scroll.scrollTo(0, -this.tabControlTop, 0)
+      this.$refs.scroll.refresh()
       // this.$refs.tabcontrol1.currentIndex = arr[1]
       // this.$refs.tabcontrol2.currentIndex = arr[1]
     },
@@ -93,9 +99,9 @@ export default {
       this.isShow = Math.abs(pos.y) > this.$refs.scroll.$el.clientWidth
       if (-pos.y >= this.tabControlTop) {
         this.isFixed = true
-      } else[
+      } else {
         this.isFixed = false
-      ]
+      }
     },
     // 加载更多
     loadMore () {
@@ -104,19 +110,6 @@ export default {
         this.$refs.scroll.finishPullUp()
         this.$refs.scroll.refresh()
       })
-
-    },
-    // refresh节流函数
-    debounce (func, delay) {
-      let timer = null
-      return function (...args) {
-        if (timer) {
-          clearTimeout(timer)
-        }
-        timer = setTimeout(() => {
-          func.apply(this, args)
-        }, delay)
-      }
     },
     // 获取tabcontrol的offsetTop
     getOffsetTop () {
@@ -140,11 +133,22 @@ export default {
     this.getGoodsList('sell')
   },
   mounted () {
-    const refresh = this.debounce(this.$refs.scroll.refresh, 100)
-    this.$bus.$on('imgLoaded', () => {
+    const refresh = debounce(this.$refs.scroll.refresh, 100)
+    this.refresh = () => {
       refresh()
-    })
-  }
+    }
+    this.$bus.$on('imgLoaded', this.refresh)
+  },
+  activated () {
+    // console.log("active" + this.leavePos);
+    this.$refs.scroll.refresh()
+    this.$refs.scroll.scrollTo(0, this.leavePos, 0)
+  },
+  deactivated () {
+    this.leavePos = this.$refs.scroll.scroll.y
+    // console.log("leave"+this.leavePos);
+    this.$bus.$off('imgLoaded', this.refresh)
+  },
 }
 </script>
 <style lang='less' scoped>
@@ -153,6 +157,7 @@ export default {
   padding-bottom: 96px;
   height: 100%;
   position: relative;
+  font-size: 14px;
   .tabPos {
     position: absolute;
     left: 0;

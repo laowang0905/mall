@@ -22,6 +22,7 @@ export default {
 </script>
 <style lang='less' scoped>
 .recommend-container {
+  font-size: 14px;
   // height: 100px;
   display: flex;
   border-radius: 6px;

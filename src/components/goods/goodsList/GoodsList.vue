@@ -1,6 +1,6 @@
 <template>
   <div class="goods-container">
-    <GoodsItem v-for="item in goodsList" :key="item.show.img+Math.random()" :item="item"></GoodsItem>
+    <GoodsItem v-for="(item, index) in goodsList" :key="index+Math.random()" :item="item"></GoodsItem>
   </div>
 </template>
 <script>

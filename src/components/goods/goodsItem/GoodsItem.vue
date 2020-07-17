@@ -1,7 +1,7 @@
 <template>
-  <div class="goods-item">
+  <div class="goods-item" @click="goDetail(goodsId)">
     <a>
-      <img :src="item.show.img" @load="imgLoad"/>
+      <img :src="imgUrl" @load="imgLoad"/>
     </a>
     <a class="goods-introduce">
       <div class="goods-title">
@@ -10,7 +10,7 @@
       <div class="goods-price">
         <span class="goods-price-sign">￥</span>
         <span class="goods-price-money">{{item.price}}</span>
-        <span class="goods-price-sell">{{item.sale}}人已购买</span>
+        <span class="goods-price-sell">{{itemSale}}人已购买</span>
       </div>
     </a>
   </div>
@@ -28,6 +28,20 @@ export default {
   methods: {
     imgLoad() {
       this.$bus.$emit('imgLoaded')
+    },
+    goDetail(iid) {
+      this.$router.push(`/detail/${iid}`)
+    }
+  },
+  computed: {
+    imgUrl() {
+      return this.item.image||this.item.show.img
+    },
+    goodsId() {
+      return this.item.iid||this.item.item_id
+    },
+    itemSale() {
+      return this.item.sale||this.item.itemSale
     }
   },
 }
